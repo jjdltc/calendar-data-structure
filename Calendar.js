@@ -1,78 +1,108 @@
-function Calendar(){
-    var self                = this,
-        actualDate          = new Date();
+/*
+-----------------------------------------------------
+=====> Share the code is the best way to learn <=====
+=====> Let the code speak <=====
+------------------------------------------------------
+@Author: Joel De La Torriente
+@Email: jjdltc@gmail.com
+@WebSite: www.jjdltc.com
+@Version: 0.2
+@License: MIT License (MIT)
+*/
 
-    this.daysArr            = ["Dom","Lun","Mar","Mie","Jue","Vie","Sab"];
-    this.monthArr           = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+function CalendarStructure(options){
+    this.actualDate     = new Date();
 
-    this.getWeeksArr = function(calcSideMonths, today, options){
-        var today           = today || actualDate,
-            options         = options || {weekStartDay:0},
-            calcSideMonths  = calcSideMonths || false,
-            monthLastDay    = new Date(today.getFullYear(),today.getMonth()+1,0).getDate(),
-            monthFirstDay   = new Date(today.getFullYear(), today.getMonth(),1).getDay(),
-            buildingWeekArr = [],
-            monthWeeks      = [],
-            actualDay       = monthFirstDay,
-            pastMont        = new Date(new Date(today.toString()).setMonth(today.getMonth()-1)),
-            nextMont        = new Date(new Date(today.toString()).setMonth(today.getMonth()+1));
-        for(var i = 1; i<=monthLastDay; i++){
-            buildingWeekArr[(actualDay-options.weekStartDay>=0)?actualDay-options.weekStartDay:(actualDay-options.weekStartDay)+7] = {dayText:self.daysArr[actualDay], dayNumber:i, monthText:self.monthArr[today.getMonth()], monthNumber:today.getMonth(), year:today.getFullYear()};
-            if(actualDay==6 || i==monthLastDay){
-                monthWeeks.push(buildingWeekArr);
-                buildingWeekArr = []
-            }
-            actualDay = (actualDay==6)?0:actualDay+1;
-        }
-        if(calcSideMonths){
-            var pastMontArr     = self.getWeeksArr(false, pastMont, options);
-                pastMontArr     = pastMontArr[pastMontArr.length-1];
-            var nextMontArr     = self.getWeeksArr(false, nextMont, options)[0];
-                monthWeeks[0]   = (pastMontArr.concat(monthWeeks[0])).filter(function(item){return true});
-                monthWeeks[monthWeeks.length-1] = (monthWeeks[monthWeeks.length-1].concat(nextMontArr)).filter(function(item){return true});
-            if(monthWeeks[0].length>7){
-                monthWeeks[0]   = monthWeeks[0].slice((monthWeeks[0].length-7),(monthWeeks[0].length))
-            }
-            if(monthWeeks[monthWeeks.length-1].length>7){
-               var tempArr = monthWeeks[monthWeeks.length-1];
-               monthWeeks[monthWeeks.length-1] = tempArr.slice(0, 7);
-               monthWeeks[monthWeeks.length]   = tempArr.slice(7, tempArr.length);
-            }
-        }
-        return monthWeeks;
+    this.languageData   = options.languageData || {
+        days            : ["Dom","Lun","Mar","Mie","Jue","Vie","Sab"],
+        daysFullText    : ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"],
+        months          : ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
+        monthsFullText  : ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
     }
 
-    this.getDaysArr = function(today, options){
-        var today           = today || actualDate,
-            clonedDate      = new Date(today),
-            weekArr         = [],
-            options         = options || {weekStartDay:0},
-            daysToWeekStart = ((options.weekStartDay - clonedDate.getDay())>0)?-(7-(options.weekStartDay - clonedDate.getDay())):(options.weekStartDay - clonedDate.getDay());
-        clonedDate.setHours(24*daysToWeekStart)
-        for(var i = 0; i<7; i++){
-            weekArr[i] = {dayText:self.daysArr[clonedDate.getDay()], dayNumber:clonedDate.getDate(), monthText:self.monthArr[clonedDate.getMonth()], monthNumber:clonedDate.getMonth(), year:clonedDate.getFullYear()};
-            clonedDate.setHours(+24);
+    this.sixWeeksPerMonth = options.sixWeeksPerMonth || true;
+}
+
+CalendarStructure.prototype.getWeeksArr = function(today, options){
+    var today           = today || this.actualDate,
+        options         = options || {
+            weekStartDay    :0, 
+            calcSideMonths  :false},
+        monthLastDay    = new Date(today.getFullYear(),today.getMonth()+1,0).getDate(),
+        monthFirstDay   = new Date(today.getFullYear(), today.getMonth(),1).getDay(),
+        buildingWeekArr = [],
+        monthWeeks      = [],
+        actualDay       = monthFirstDay,
+        pastMont        = new Date(new Date(today.toString()).setMonth(today.getMonth()-1)),
+        nextMont        = new Date(new Date(today.toString()).setMonth(today.getMonth()+1));
+
+    for(var i = 1; i<=monthLastDay; i++){
+        buildingWeekArr[(actualDay-options.weekStartDay>=0)?actualDay-options.weekStartDay:(actualDay-options.weekStartDay)+7] = {dayText:this.languageData.days[actualDay], dayNumber:i, monthText:this.languageData.months[today.getMonth()], monthNumber:today.getMonth(), year:today.getFullYear()};
+        if(actualDay==6 || i==monthLastDay){
+            monthWeeks.push(buildingWeekArr);
+            buildingWeekArr = []
         }
-        return weekArr;
+        actualDay = (actualDay==6)?0:actualDay+1;
     }
 
-    this.setOtherWeek = function(difference){
-        difference      = difference || 0;
-        if(difference==0){
-            actualDate = new Date();
-        }
-        else{
-            actualDate.setHours(actualDate.getHours()+(difference+(7*24)));
-        }
-    }
+    if(options.calcSideMonths){
+        var tempOptions     = JSON.parse(JSON.stringify(options));
+            tempOptions.calcSideMonths = false;
+        var pastMontArr     = this.getWeeksArr(pastMont, tempOptions);
+            pastMontArr     = pastMontArr[pastMontArr.length-1];
+        var nextMontArr     = this.getWeeksArr(nextMont, tempOptions)[0];
+            monthWeeks[0]   = (pastMontArr.concat(monthWeeks[0])).filter(function(item){return true});
+            monthWeeks[monthWeeks.length-1] = (monthWeeks[monthWeeks.length-1].concat(nextMontArr)).filter(function(item){return true});
 
-    this.setOtherMonth  = function(difference){
-        difference      = difference || 0;
-        if(difference==0){
-            actualDate = new Date();
+        if(monthWeeks[0].length>7){
+            monthWeeks[0]   = monthWeeks[0].slice((monthWeeks[0].length-7),(monthWeeks[0].length))
         }
-        else{
-            actualDate.setMonth(actualDate.getMonth()+difference);
+
+        if(monthWeeks[monthWeeks.length-1].length>7){
+           var tempArr = monthWeeks[monthWeeks.length-1];
+           monthWeeks[monthWeeks.length-1] = tempArr.slice(0, 7);
+           monthWeeks[monthWeeks.length]   = tempArr.slice(7, tempArr.length);
         }
+
+        if(this.sixWeeksPerMonth && monthWeeks.length<6){
+            for(var week = 1; monthWeeks.length<6; week++){
+                monthWeeks.push(nextMontArr[week]);
+            }
+        }            
+    }
+    return monthWeeks;
+}
+
+CalendarStructure.prototype.getDaysArr = function(today, options){
+    var today           = today || this.actualDate,
+        clonedDate      = new Date(today),
+        weekArr         = [],
+        options         = options || {weekStartDay:0},
+        daysToWeekStart = ((options.weekStartDay - clonedDate.getDay())>0)?-(7-(options.weekStartDay - clonedDate.getDay())):(options.weekStartDay - clonedDate.getDay());
+    clonedDate.setHours(24*daysToWeekStart)
+    for(var i = 0; i<7; i++){
+        weekArr[i] = {dayText:this.languageData.days[clonedDate.getDay()], dayNumber:clonedDate.getDate(), monthText:this.languageData.months[clonedDate.getMonth()], monthNumber:clonedDate.getMonth(), year:clonedDate.getFullYear()};
+        clonedDate.setHours(+24);
+    }
+    return weekArr;
+}
+
+CalendarStructure.prototype.setOtherWeek = function(difference){
+    difference      = difference || 0;
+    if(difference==0){
+        this.actualDate = new Date();
+    }
+    else{
+        this.actualDate.setHours(this.actualDate.getHours()+(difference+(7*24)));
+    }
+}
+
+CalendarStructure.prototype.setOtherMonth  = function(difference){
+    difference      = difference || 0;
+    if(difference==0){
+        this.actualDate = new Date();
+    }
+    else{
+        this.actualDate.setMonth(this.actualDate.getMonth()+difference);
     }
 }
