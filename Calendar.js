@@ -87,8 +87,12 @@ CalendarStructure.prototype.getDaysArr = function(today, options){
     return weekArr;
 }
 
+/*
+Set the actual date to another week
+@params: difference {Integer 1...n} difference in weeks to set (could be negative)
+*/
 CalendarStructure.prototype.setOtherWeek = function(difference){
-    difference      = difference || 0;
+    var difference      = difference || 0;
     if(difference==0){
         this.actualDate = new Date();
     }
@@ -97,8 +101,12 @@ CalendarStructure.prototype.setOtherWeek = function(difference){
     }
 }
 
+/*
+Set the actual date to another month
+@params: difference {Integer 1...n} difference in months to set (could be negative)
+*/
 CalendarStructure.prototype.setOtherMonth  = function(difference){
-    difference      = difference || 0;
+    var difference      = difference || 0;
     if(difference==0){
         this.actualDate = new Date();
     }
