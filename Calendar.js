@@ -91,13 +91,22 @@ CalendarStructure.prototype.getDaysArr = function(today, options){
 Set the actual date to another week
 @params: difference {Integer 1...n} difference in weeks to set (could be negative)
 */
+CalendarStructure.prototype.setOtherDay = function(difference){
+    var difference      = difference || 0
+      , isInt           = difference % 1 === 0;
+    if(difference!=0 && isInt){
+        this.actualDate.setDate(this.actualDate.getDate()+difference);
+    }
+}
+
+/*
+Set the actual date to another week
+@params: difference {Integer 1...n} difference in weeks to set (could be negative)
+*/
 CalendarStructure.prototype.setOtherWeek = function(difference){
     var difference      = difference || 0;
-    if(difference==0){
-        this.actualDate = new Date();
-    }
-    else{
-        this.actualDate.setHours(this.actualDate.getHours()+(difference+(7*24)));
+    if(difference!=0){
+        this.actualDate.setDate(this.actualDate.getDate()+(difference*7));
     }
 }
 
@@ -107,10 +116,18 @@ Set the actual date to another month
 */
 CalendarStructure.prototype.setOtherMonth  = function(difference){
     var difference      = difference || 0;
-    if(difference==0){
-        this.actualDate = new Date();
-    }
-    else{
+    if(difference!=0){
         this.actualDate.setMonth(this.actualDate.getMonth()+difference);
+    }
+}
+
+/*
+Set the actual date to another year
+@params: difference {Integer 1...n} difference in years to set (could be negative)
+*/
+CalendarStructure.prototype.setOtherYear  = function(difference){
+    var difference      = difference || 0;
+    if(difference!=0){
+        this.actualDate.setFullYear(this.actualDate.getFullYear()+difference);
     }
 }

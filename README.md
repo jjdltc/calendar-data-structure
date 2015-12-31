@@ -8,3 +8,7 @@ Simple calendar data structure, allow you to
 * Move to the next or past month / week and get that data
 
 __IMPORTANT__ => this is the structure needed to create and navigate in the calendar, but not for decorate it... It just return the array with the info, and allow you to surf future and past in calendar.
+
+
+Problems with month change in the last day
+week array (sixweek mode) not accurate in first and last week (Side months Moths) with week star date not 0 (SUN)
