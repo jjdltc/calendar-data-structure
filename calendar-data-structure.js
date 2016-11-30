@@ -2,9 +2,13 @@
 	@Author: Joel De La Torriente
 	@Email: jjdltc@gmail.com
 	@WebSite: www.jjdltc.com
-	@Version: 0.2
+	@Version: 0.3.0
 	@License: MIT License (MIT)
 */
+
+if(module && module.hasOwnProperty("exports")){
+	module.exports = CalendarStructure;
+}
 
 function CalendarStructure(options){
 	var options					= options || {};
@@ -16,14 +20,13 @@ function CalendarStructure(options){
 		monthsFullText			: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
 	};
 
-	this.actualDate				= new Date();
 	this.options				= {
 		sixWeeksPerMonth		: options.sixWeeksPerMonth || false
 	  , weekStartDay			: (options.weekStartDay && options.weekStartDay < 7)?options.weekStartDay:0
-	  , calcSideMonths			: options.calcSideMonths || false 
+	  , actualDate				: options.actualDate || new Date() 
 	};
 
-	this.sixWeeksPerMonth		= this.options.sixWeeksPerMonth;
+	this.actualDate				= this.options.actualDate;
 	this.utils					= this.utils();
 }
 
