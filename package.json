@@ -1,35 +1,38 @@
 {
-	"title"				: "calendar-data-structure"
-  , "name"				: "calendar-data-structure"
-  , "version"			: "0.3.0"
-  , "description"		: "A calendar structure, to create month and weeks arrays that help the view creation"
-  , "homepage"			: "https://github.com/jjdltc/calendar-data-structure#readme"
-  , "license"			: "MIT"
-  , "main"				: "calendar-data-structure.js"
-  , "author"			: "Joel De La Torriente <jjdltc@gmail.com> (http://jjdltc.com)"
-  , "keywords"			: [
-		"calendar"
-	  , "week"
-	  , "month"
-	  , "structure"
-	  , "year"
-	]
-  , "maintainers"		: [
-		"Joel De La Torriente <jjdltc@gmail.com> (http://jjdltc.com)"
-	]
-  , "contributors"		: [
-		"Joel De La Torriente <jjdltc@gmail.com> (http://jjdltc.com)"
-	]
-  , "bugs"				: {
-		"url"			: "https://github.com/jjdltc/calendar-data-structure/issues"
-	}
-  , "repository"		: {
-		"type": "git"
-	  , "url": "git+https://github.com/jjdltc/calendar-data-structure.git"
-	}
-  , "dependencies"		: {}
-  , "devDependencies"	: {}
-  , "scripts"			: {
-		"test"			: "echo \"Error: :P no test specified\" && exit 1"
-	}
+  "title": "calendar-data-structure",
+  "name": "calendar-data-structure",
+  "version": "0.3.1",
+  "description": "A calendar structure, to create month and weeks arrays that help the view creation",
+  "homepage": "https://github.com/jjdltc/calendar-data-structure#readme",
+  "license": "MIT",
+  "main": "calendar-data-structure.js",
+  "author": "Joel De La Torriente <jjdltc@gmail.com> (http://jjdltc.com)",
+  "keywords": [
+    "calendar",
+    "week",
+    "month",
+    "structure",
+    "year"
+  ],
+  "maintainers": [
+    "Joel De La Torriente <jjdltc@gmail.com> (http://jjdltc.com)"
+  ],
+  "contributors": [
+    "Joel De La Torriente <jjdltc@gmail.com> (http://jjdltc.com)"
+  ],
+  "bugs": {
+    "url": "https://github.com/jjdltc/calendar-data-structure/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjdltc/calendar-data-structure.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
 }
